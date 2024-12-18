@@ -1,0 +1,18 @@
+* Gauthali
+
+A simple tool to play music on multiple devices at once.
+
+* Usage
+
+- Start the server
+- Go to the url of server from multiple devices
+- Upload audio, it will now be played in all devices simultaneously and insync
+
+* Run
+
+#+begin_src shell
+  python -m venv .venv
+  source .venv/bin/activate
+  pip install -r requirements.txt
+  python server.py
+#+end_src
