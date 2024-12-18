@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <title>Party Music Player</title>
+        <script type="text/javascript" src="static/controls.js"></script>
+    </head>
+    <body>
+        <h1>Play Music on Multiple Devices at once </h1>
+        <h3>Now playing: <span id="song-name">Nothing</span></h3>
+        <br/>
+        <audio id="audio" controls loop>
+            <source src="" id="audio-source" />
+        </audio>
+
+        <p>
+            <h3>Upload your music:</h3>
+            <form method="post" action="/upload" enctype="multipart/form-data">
+                <input
+                    name="audio-file"
+                    type="file"
+                    accept=".webm,.ogg,.mp3,.wav" />
+                <button type="submit">Play</button>
+                <button type="reset">Clear</button>
+            </form>
+        </p>
+
+        <br/>
+        <br/>
+        <p>
+            by <a href="https://x.com/bpanthi977">@bpanthi977</a>
+        </p>
+    </body>
+</html>
