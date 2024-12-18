@@ -3,6 +3,8 @@ import io
 import random
 import math
 
+import mutagen
+
 from flask import Flask, current_app, request, send_from_directory, jsonify, url_for
 from flask.helpers import redirect
 
@@ -20,12 +22,16 @@ class Audio:
     filename: str = ''
     start_time: float = 0
     identifier: int = 0
+    total_duration: float = 0
 
     def __init__(self, data: None | bytes, filename: str):
         self.data = data
         self.filename = filename
         self.start_time = time.time_ns() // 1_000_000
         self.identifier = 1 + math.floor(random.random() * 1_000_000)
+        if (data):
+            self.total_duration = mutagen.File(io.BytesIO(data)).info.length
+
 
 current_audio: Audio = Audio(None, '')
 
@@ -83,7 +89,7 @@ def get_state():
     """Get current state of playback"""
     global current_audio
 
-    return jsonify({'filename': current_audio.filename, 'start_time': current_audio.start_time, 'id': current_audio.identifier, 'server_time': time.time_ns() // 1_000_000})
+    return jsonify({'filename': current_audio.filename, 'start_time': current_audio.start_time, 'id': current_audio.identifier, 'server_time': time.time_ns() // 1_000_000, 'total_duration': current_audio.total_duration})
 
 if __name__ == '__main__':
     # Run the app

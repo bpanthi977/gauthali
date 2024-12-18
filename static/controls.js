@@ -39,19 +39,16 @@ function sync_diff_update(diff) {
     }
 }
 
-function update_song_time(start_time) {
+function update_song_time(start_time, total_duration) {
     const audio = document.getElementById("audio");
     if (audio.paused) return;
     if (start_time == false) {
         audio.currentTime = 0;
         audio.pause();
     } else {
-        let time = (Date.now() + server_time_diff - start_time) / 1000;
-        if (audio.duration) {
-            time = time % audio.duration;
-        }
+        let time = ((Date.now() + server_time_diff - start_time) / 1000) % total_duration;
         const diff = time - audio.currentTime;
-        console.log({time, start_time, now: Date.now(), d: audio.duration, current: audio.currentTime, diff});
+        console.log({time, start_time, now: Date.now(), d: total_duration, current: audio.currentTime, diff});
         if (Math.abs(diff) > 0.1) {
             if (audio.duration) {
                 sync_diff_update(diff);
@@ -79,7 +76,7 @@ async function update_state() {
     const t0 = Date.now();
 
     const result = await (await fetch('/state')).json();
-    const {filename, start_time, id, server_time} = result;
+    const {filename, start_time, id, server_time, total_duration} = result;
 
     const t3 = Date.now();
     sync_time(t0, server_time, t3);
@@ -87,7 +84,7 @@ async function update_state() {
     if (filename) {
         update_song(id);
         update_song_name(filename);
-        update_song_time(start_time);
+        update_song_time(start_time, total_duration);
     } else {
         update_song_name('Nothing');
         update_song_time(false);
