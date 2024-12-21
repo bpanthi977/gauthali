@@ -2,6 +2,8 @@
 
 A simple tool to play music on multiple devices at once.
 
+Try it out at: [[http://gauthali.westus2.cloudapp.azure.com]]
+
 * Usage
 
 - Start the server
@@ -17,10 +19,9 @@ This project uses =uv= to manage dependencies. If you don't have =uv= installed,
    #+end_src
 
 Now,
-1. Create python virtual environment and install the requirements as follows:
+1. Run the =uv sync= command to create python virtual environment and install the requirements:
 #+begin_src shell
   uv sync
-  source .venv/bin/activate
 #+end_src
 
 2. Install ~ffmpeg~ in your system (we require this to decode the audio file uploaded by user)
@@ -36,12 +37,13 @@ Now,
 
 To run production server you can use `gunicorn` or other servers:
 #+begin_src
+    source .venv/bin/activate
     gunicorn -w 1 'server:app' -b 0.0.0.0:5000
 #+end_src
 
 During developement you can run the server as: `python server.py`
 
-* Port Forwarding
+** Port Forwarding
 
 If you run the server as above, it will serve external requests at port 5000. To serve requests at port 80 you can use port forwarding using iptables as follows:
 
