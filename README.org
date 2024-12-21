@@ -46,10 +46,8 @@ During developement you can run the server as: `python server.py`
 If you run the server as above, it will serve external requests at port 5000. To serve requests at port 80 you can use port forwarding using iptables as follows:
 
 #+begin_src shell
-  ## Forward requests to 80 towards 500
-
-  # Local requests (debugging purposes)
-  sudo iptables -t nat -A OUTPUT     -p tcp --dport 80 -j REDIRECT --to-port 5000
-  # External requests
+  ## Forward external requests to 80 towards 500
   sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 5000
 #+end_src
+
+Note that this doesn't forward internal requests to port 80 towards port 5000. So if you try `curl localhost:80` it won't work. Either use port 5000 : `curl localhost:5000` or use public ip/domain name of your server: `curl public-ip-of-server:80`.
