@@ -46,7 +46,7 @@ function update_song_time(start_time, total_duration) {
         audio.currentTime = 0;
         audio.pause();
     } else {
-        let time = ((Date.now() + server_time_diff - start_time) / 1000) % total_duration;
+        let time = ((Date.now() + server_time_diff - start_time) % total_duration) / 1000;
         const diff = time - audio.currentTime;
         console.log({time, start_time, now: Date.now(), d: total_duration, current: audio.currentTime, diff});
         if (Math.abs(diff) > 0.1) {
