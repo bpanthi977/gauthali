@@ -3,7 +3,7 @@ import io
 import random
 import math
 
-import mutagen
+from pydub import AudioSegment
 
 from flask import Flask, current_app, request, send_from_directory, jsonify, url_for
 from flask.helpers import redirect
@@ -30,7 +30,13 @@ class Audio:
         self.start_time = time.time_ns() // 1_000_000
         self.identifier = 1 + math.floor(random.random() * 1_000_000)
         if (data):
-            self.total_duration = mutagen.File(io.BytesIO(data)).info.length
+            media = AudioSegment.from_file(io.BytesIO(data))
+            if (not media):
+                self.total_duration = -1
+                print("no media")
+                print(media)
+            else:
+                self.total_duration = len(media)
 
 
 current_audio: Audio = Audio(None, '')
@@ -43,8 +49,12 @@ def allowed_file(filename):
 @app.route('/')
 def index():
     """Serve the index.html file from the static folder."""
-    print('serving index 2')
     return send_from_directory(STATIC_FOLDER, 'index.html')
+
+@app.route('/favicon.ico')
+def serve_favicon():
+    """Serve Favicon files."""
+    return send_from_directory(STATIC_FOLDER, 'favicon.ico')
 
 @app.route('/static/<path:filename>')
 def serve_static(filename):
@@ -64,7 +74,6 @@ def upload_file():
     """Handle file uploads."""
     global current_audio
     # Check if the post request has the file part
-    print(request)
     if 'audio-file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
 
