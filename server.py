@@ -2,6 +2,7 @@ import time
 import io
 import random
 import math
+import re
 
 from pydub import AudioSegment
 
@@ -59,6 +60,7 @@ def serve_favicon():
 @app.route('/static/<path:filename>')
 def serve_static(filename):
     """Serve static files."""
+    filename = re.sub(r'\.html.*$', '.html', filename)
     return send_from_directory(STATIC_FOLDER, filename)
 
 @app.route('/music')
