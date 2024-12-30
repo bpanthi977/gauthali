@@ -2,8 +2,6 @@
 
 A simple tool to play music on multiple devices at once.
 
-Try it out at: [[http://gauthali.westus2.cloudapp.azure.com]]
-
 * Usage
 
 - Start the server
